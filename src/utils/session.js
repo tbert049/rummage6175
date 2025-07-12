@@ -3,9 +3,14 @@ const crypto = require('crypto');
 const SESSION_COOKIE_NAME = '__session';
 const SESSION_DURATION_SECONDS = 1 * 60 * 60; // 1 hour
 
-// Auto-generate session secret key on startup for better security
-const SESSION_SECRET_KEY = crypto.randomBytes(32).toString('hex');
-console.log("Auto-generated session secret key for this session.");
+// Use a fixed session secret key if provided, otherwise generate a new one
+const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY || crypto.randomBytes(32).toString('hex');
+
+if (process.env.SESSION_SECRET_KEY) {
+    console.log("Using session secret key from environment variable.");
+} else {
+    console.log("Auto-generated session secret key for this session.");
+}
 
 /**
  * Converts Buffer to Base64 URL safe string.
