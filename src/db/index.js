@@ -6,8 +6,13 @@ const GitHubSync = require('../utils/githubSync');
 // Construct the database path
 let dataDir;
 
+// Check for Vercel environment
+if (process.env.VERCEL) {
+  dataDir = '/tmp';
+  console.log(`Using Vercel temporary data directory: ${dataDir}`);
+}
 // Use /home/user/data directory on Hugging Face Space
-if (process.env.HUGGING_FACE === '1') {
+else if (process.env.HUGGING_FACE === '1') {
   dataDir = '/home/user/data';
   console.log(`Using Hugging Face persistent data directory: ${dataDir}`);
 } else {
